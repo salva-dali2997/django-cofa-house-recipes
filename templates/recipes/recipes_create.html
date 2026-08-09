@@ -1,0 +1,22 @@
+{% load static %}
+<html>
+  <head>
+    <title>Getting Started with Django and Vite</title>
+  </head>
+  <body>
+    {% comment %} <div id="root"></div>
+    <script src="{% static 'js/index-bundle.js' %}"></script> {% endcomment %}
+    <form action="/recipes/create" method="post">
+      {% csrf_token %}
+      {{ recipe_form }}
+      <input type="submit" value="Submit">
+    </form>
+    {% for ingredient_form in ingredients_form %}
+      <form action="/ingredients/create" method="post">
+        {% csrf_token %}
+        {{ ingredient_form }}
+        <input type="submit" value="Submit">
+      </form>
+    {% endfor %}
+  </body>
+</html>
