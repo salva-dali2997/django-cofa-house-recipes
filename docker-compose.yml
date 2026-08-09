@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: cofa
+      POSTGRES_PASSWORD: cofa
+      POSTGRES_DB: cofa_house_recipes
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cofa"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+      - /app/.venv
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgres://cofa:cofa@db:5432/cofa_house_recipes
+      DEBUG: "True"
+      CREATE_SUPERUSER: "true"
+      SEED_RECIPES: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Rebuilds static/js on change. `web` serves it straight from ./static
+  # since DEBUG=True (no collectstatic needed in dev).
+  vite:
+    image: node:22-slim
+    working_dir: /app
+    command: sh -c "npm ci && npm run build -- --watch"
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+volumes:
+  pgdata:

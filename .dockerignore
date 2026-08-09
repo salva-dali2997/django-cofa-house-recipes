@@ -1,0 +1,13 @@
+.venv
+.git
+.github
+__pycache__
+*.py[oc]
+db.sqlite3
+.env
+.env.example
+fly.toml
+Dockerfile
+.dockerignore
+node_modules
+staticfiles

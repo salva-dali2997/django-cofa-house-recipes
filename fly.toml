@@ -1,0 +1,20 @@
+# Replace `app` with your actual Fly app name (from `fly apps create`).
+app = "cofa-house-recipes"
+primary_region = "iad"
+
+[build]
+
+[deploy]
+  release_command = "python manage.py migrate"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "256mb"

@@ -1,0 +1,51 @@
+name: Bootstrap Infrastructure
+
+# Manual only — this provisions Fly apps, a persistent volume, and secrets.
+# Not run on push: fly volumes create is not idempotent, and re-running it
+# blindly would create a second, disconnected volume instead of reusing the
+# existing one.
+on:
+  workflow_dispatch:
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Create Postgres app
+        run: fly apps create cofa-house-db || echo "cofa-house-db already exists, skipping"
+
+      - name: Create Postgres volume
+        run: |
+          if fly volumes list -a cofa-house-db --json | jq -e '.[] | select(.name=="pgdata")' > /dev/null; then
+            echo "volume pgdata already exists, skipping"
+          else
+            fly volumes create pgdata -a cofa-house-db --region iad --size 10 --yes
+          fi
+
+      - name: Set Postgres secrets
+        run: |
+          fly secrets set \
+            POSTGRES_PASSWORD="${{ secrets.POSTGRES_PASSWORD }}" \
+            POSTGRES_USER=cofa \
+            POSTGRES_DB=cofa_house_recipes \
+            -a cofa-house-db
+
+      - name: Deploy Postgres
+        run: fly deploy -c postgres/fly.toml -a cofa-house-db --remote-only
+
+      - name: Create recipes app
+        run: fly apps create cofa-house-recipes || echo "cofa-house-recipes already exists, skipping"
+
+      - name: Set recipes app secrets
+        run: |
+          fly secrets set \
+            DATABASE_URL="postgres://cofa:${{ secrets.POSTGRES_PASSWORD }}@cofa-house-db.internal:5432/cofa_house_recipes" \
+            SECRET_KEY="${{ secrets.DJANGO_SECRET_KEY }}" \
+            ALLOWED_HOSTS="cofa-house-recipes.fly.dev" \
+            CSRF_TRUSTED_ORIGINS="https://cofa-house-recipes.fly.dev" \
+            -a cofa-house-recipes

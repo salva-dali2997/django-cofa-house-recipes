@@ -1,0 +1,19 @@
+# Self-managed Postgres. No public IP is allocated for this app — the
+# recipes app reaches it over Fly's private network at cofa-house-db.internal:5432.
+# Deploy with: fly deploy -c postgres/fly.toml
+app = "cofa-house-db"
+primary_region = "iad"
+
+[build]
+  image = "postgres:16"
+
+[env]
+  PGDATA = "/var/lib/postgresql/data/pgdata"
+
+[[mounts]]
+  source = "pgdata"
+  destination = "/var/lib/postgresql/data"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"

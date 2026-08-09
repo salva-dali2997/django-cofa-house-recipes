@@ -1,0 +1,11 @@
+{% load static %}
+<html>
+  <head>
+    <title>Getting Started with Django and Vite</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    {{ recipes_data|json_script:"recipes-data" }}
+    <script src="{% static 'js/index-bundle.js' %}"></script>
+  </body>
+</html>

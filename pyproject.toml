@@ -1,0 +1,30 @@
+[project]
+name = "django-cofa-house-recipes"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "salva-dali2997", email = "salvatore1004@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "django>=6.1",
+    "django-environ>=0.14.0",
+    "psycopg[binary]>=3.3.4",
+]
+
+[project.scripts]
+django-cofa-house-recipes = "django_cofa_house_recipes:main"
+
+[build-system]
+requires = ["uv_build>=0.12.2,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "django-debug-toolbar>=7.0.0",
+]
+prod = [
+    "gunicorn>=26.0.0",
+    "whitenoise>=6.11.0",
+]
