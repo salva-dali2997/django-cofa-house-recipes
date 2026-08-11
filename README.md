@@ -26,7 +26,7 @@ Views pass data to templates as plain context, same as before. Templates hand th
 safely serializes it into a `<script type="application/json">` tag. The React entrypoint
 (`assets/index.jsx`) reads that tag and renders the app into `<div id="root">`.
 
-See `recipes/views.py` (builds `recipes_data`), `templates/recipes/recipes_view.html`
+See `recipes/views.py` (builds `recipes_data`), `templates/recipes/recipes_view_all.html`
 (`{{ recipes_data|json_script:"recipes-data" }}`), and `assets/index.jsx` /
 `assets/RecipeList.jsx` for the pattern to follow when adding new React-backed views.
 
@@ -94,4 +94,12 @@ docker compose exec web python manage.py createsuperuser
 ```bash
 docker build -t cofa-house-recipes .
 docker run -p 8000:8000 --env-file .env cofa-house-recipes
+```
+
+## Run tests
+
+Tests live in `recipes/tests.py`
+
+```bash
+uv run manage.py test recipes
 ```

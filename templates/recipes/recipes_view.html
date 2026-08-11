@@ -1,11 +1,6 @@
-{% load static %}
-<html>
-  <head>
-    <title>Getting Started with Django and Vite</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    {{ recipes_data|json_script:"recipes-data" }}
-    <script src="{% static 'js/index-bundle.js' %}"></script>
-  </body>
-</html>
+<h1>{{ recipe.name }}</h1>
+<ul>
+  {% for ingredient in ingredients %}
+    <li>{{ ingredient.name }}</li>
+  {% endfor %}
+</ul>

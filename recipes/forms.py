@@ -1,8 +1,23 @@
 from django import forms
+from .models import Recipe, Ingredient
+from django.forms import inlineformset_factory
+from django.utils.translation import gettext_lazy as _
 
-class RecipeForm(forms.Form):
-  name = forms.CharField(label="Recipe Name", max_length=40)
+class RecipeForm(forms.ModelForm):
+  class Meta:
+    model = Recipe
+    fields = ['name']
 
-class IngredientsForm(forms.Form):
-  name = forms.CharField(max_length=20)
-  quantity = forms.CharField(max_length=10)
+class IngredientForm(forms.ModelForm):
+  class Meta:
+    model = Ingredient
+    fields = ['name', 'quantity']
+    labels = {"name": _("Ingredient")}
+
+IngredientFormSet = inlineformset_factory(
+  Recipe,
+  Ingredient,
+  form=IngredientForm,
+  extra=3,
+  can_delete=False
+)
