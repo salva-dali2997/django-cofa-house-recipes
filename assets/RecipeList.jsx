@@ -1,8 +1,8 @@
 function RecipeList({ recipes }) {
   return (
-    <ul>
+    <ul className="list-none">
       {recipes.map((recipe) => (
-        <li key={recipe.id}>{recipe.name}</li>
+        <li key={recipe.id}><a href={`/recipes/${recipe.id}`} className="hover:font-bold">{recipe.name}</a></li>
       ))}
     </ul>
   );

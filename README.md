@@ -26,7 +26,7 @@ Views pass data to templates as plain context, same as before. Templates hand th
 safely serializes it into a `<script type="application/json">` tag. The React entrypoint
 (`assets/index.jsx`) reads that tag and renders the app into `<div id="root">`.
 
-See `recipes/views.py` (builds `recipes_data`), `templates/recipes/recipes_view_all.html`
+See `recipes/views.py` (builds `recipes_data`), `templates/recipes/view_all.html`
 (`{{ recipes_data|json_script:"recipes-data" }}`), and `assets/index.jsx` /
 `assets/RecipeList.jsx` for the pattern to follow when adding new React-backed views.
 
@@ -52,8 +52,14 @@ Leave `DATABASE_URL` unset in `.env` and the app falls back to `db.sqlite3` in t
 you can log in to `/admin` right away. Override the username/password/email via the
 `DJANGO_SUPERUSER_USERNAME` / `DJANGO_SUPERUSER_PASSWORD` / `DJANGO_SUPERUSER_EMAIL` env vars.
 
-`seed_recipes` adds 15 recipes with simple names (Pancakes, Spaghetti, Tacos, etc.) so there's
-something to look at right away. It's safe to re-run — it skips any recipes that already exist by name.
+`seed_recipes` adds a handful of recipes (Spaghetti, Tacos, Caesar Salad, etc.), each with its own
+ingredients, so there's something to look at right away. It's safe to re-run — it skips any recipes
+that already exist by name, only adding ingredients that don't already exist for that recipe. Pass
+`--reset` to delete all existing recipes and ingredients first and reseed from scratch:
+
+```bash
+uv run python manage.py seed_recipes --reset
+```
 
 ## Local development — Docker Compose (Postgres)
 
@@ -72,8 +78,9 @@ This starts three services:
 
 `entrypoint.sh` runs migrations on every `web` startup, and also runs `ensure_superuser` and
 `seed_recipes` when `CREATE_SUPERUSER=true` / `SEED_RECIPES=true` (set in `docker-compose.yml`, not in
-production). That means a local superuser (`admin` / `admin`) and 15 sample recipes are ready without
-any extra steps. See the SQLite section above for how to override the superuser credentials.
+production). That means a local superuser (`admin` / `admin`) and sample recipes (with ingredients) are
+ready without any extra steps. See the SQLite section above for how to override the superuser
+credentials.
 
 Run one-off management commands against the running stack, e.g.:
 

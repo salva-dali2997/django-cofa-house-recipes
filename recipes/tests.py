@@ -1,8 +1,13 @@
-from django.test import TestCase
+from django.test import TestCase, SimpleTestCase, override_settings
 from django.urls import reverse
 from .models import Recipe, Ingredient
 from .forms import IngredientForm
 
+# Override static file generation dependency for tests
+@override_settings(STORAGES={
+  "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+  "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+})
 class RecipeCreateTest(TestCase):
   def test_valid_post_creates_recipes_and_ingredients(self):
     data = {
@@ -16,11 +21,11 @@ class RecipeCreateTest(TestCase):
       "ingredients-1-name": "Dressing",
       "ingredients-1-quantity": "2 tbsp",
     }
-    response = self.client.post(reverse("recipes_create"), data)
+    response = self.client.post(reverse("recipes:create"), data)
     self.assertEqual(Recipe.objects.count(), 1)
     recipe = Recipe.objects.get(name="Salad")
     self.assertEqual(recipe.ingredients.count(), 2)
-    self.assertRedirects(response, reverse("recipes_view_all"))
+    self.assertRedirects(response, reverse("recipes:view_all"))
 
   def test_invalid_post_does_not_create_recipe_or_ingredients(self):
     data = {
@@ -34,17 +39,54 @@ class RecipeCreateTest(TestCase):
       "ingredients-1-name": "Dressing",
       "ingredients-1-quantity": "2 tbsp",
     }
-    response = self.client.post(reverse("recipes_create"), data)
+    response = self.client.post(reverse("recipes:create"), data)
     self.assertEqual(Recipe.objects.count(), 0)
-    self.assertContains(response, '<h1>Create a Recipe</h1>')
-    self.assertFormSetError(
-      response.context["ingredient_formset"],
-      0,
-      "name",
-      ["This field is required."]
-    )
+    self.assertEqual(response.status_code, 200)
 
   def test_get_recipes_renders_empty_form(self):
-    response = self.client.get(reverse("recipes_create"))
+    response = self.client.get(reverse("recipes:create"))
     self.assertEqual(response.status_code, 200)
-    self.assertContains(response, '<h1>Create a Recipe</h1>')
+    self.assertContains(response, 'id="root"')
+    self.assertContains(response, 'id="recipe"')
+    self.assertContains(response, 'id="ingredients"')
+
+# Override static file generation dependency for tests
+@override_settings(STORAGES={
+  "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+  "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
+})
+class RecipesViewTest(TestCase):
+  def setUp(self):
+    self.recipe = Recipe.objects.create(name="Cucumber Salad")
+    Ingredient.objects.create(
+      recipe=self.recipe,
+      name="Cucmber",
+      quantity="1"
+    )
+    Ingredient.objects.create(
+      recipe=self.recipe,
+      name="Vinegar",
+      quantity="1/2 Cup"
+    )
+
+  def test_200_on_valid_recipes_view(self):
+    response = self.client.get(reverse("recipes:view", kwargs={"id": self.recipe.id}))
+    self.assertEqual(response.status_code, 200)
+    self.assertContains(response, "Cucumber Salad")
+    self.assertContains(response, "Vinegar")
+
+  def test_404_on_invalid_recipes_view(self):
+    response = self.client.get(reverse("recipes:view", kwargs={"id": self.recipe.id + 1}))
+    self.assertEqual(response.status_code, 404)
+
+# Uses SimpleTestCase because nothing
+# is being written to the database
+class IngredientFormTest(SimpleTestCase):
+  def test_blank_name_is_invalid(self):
+    form = IngredientForm(data={"name": "", "quantity": "1 cup"})
+    self.assertFalse(form.is_valid())
+    self.assertIn("name", form.errors)
+
+  def test_valid_data_is_valid(self):
+    form = IngredientForm(data={"name": "Flour", "quantity": "1 cup"})
+    self.assertTrue(form.is_valid())

@@ -1,0 +1,11 @@
+{% load static %}
+<html>
+  <head>
+    {% block title %}Cofa House Recipes{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/tailwind-bundle.css' %}">
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+    {% block scripts %}{% endblock %}
+  </body>
+</html>
