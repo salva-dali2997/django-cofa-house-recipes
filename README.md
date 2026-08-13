@@ -52,10 +52,10 @@ Leave `DATABASE_URL` unset in `.env` and the app falls back to `db.sqlite3` in t
 you can log in to `/admin` right away. Override the username/password/email via the
 `DJANGO_SUPERUSER_USERNAME` / `DJANGO_SUPERUSER_PASSWORD` / `DJANGO_SUPERUSER_EMAIL` env vars.
 
-`seed_recipes` adds a handful of recipes (Spaghetti, Tacos, Caesar Salad, etc.), each with its own
-ingredients, so there's something to look at right away. It's safe to re-run — it skips any recipes
-that already exist by name, only adding ingredients that don't already exist for that recipe. Pass
-`--reset` to delete all existing recipes and ingredients first and reseed from scratch:
+`seed_recipes` adds a handful of recipes, each with its own ingredients, so there's something 
+to look at right away. It's safe to re-run — it skips any recipes that already exist by name, 
+only adding ingredients that don't already exist for that recipe. Pass `--reset` to delete all 
+existing recipes and ingredients first and reseed from scratch:
 
 ```bash
 uv run python manage.py seed_recipes --reset
