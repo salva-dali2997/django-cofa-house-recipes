@@ -14,9 +14,11 @@ export default defineConfig({
     manifest: "manifest.json",
     rollupOptions: {
       input: {
-        'index': path.resolve(__dirname, './assets/index.jsx'),
+        'index': path.resolve(__dirname, './assets/entries/index.jsx'),
         'tailwind': path.resolve(__dirname, './assets/main.css'),
-        'create-recipe': path.resolve(__dirname, './assets/create.jsx'),
+        'create-recipe': path.resolve(__dirname, './assets/entries/create.jsx'),
+        'view-recipe': path.resolve(__dirname, './assets/entries/view.jsx'),
+        'nav-bar': path.resolve(__dirname, './assets/entries/nav.jsx'),
       },
       output: {
         // Output JS bundles to js/ directory with -bundle suffix

@@ -1,6 +1,6 @@
 from django.test import TestCase, SimpleTestCase, override_settings
 from django.urls import reverse
-from .models import Recipe, Ingredient
+from .models import Recipe, Ingredient, RecipeIngredient
 from .forms import IngredientForm
 
 # Override static file generation dependency for tests
@@ -58,22 +58,16 @@ class RecipeCreateTest(TestCase):
 class RecipesViewTest(TestCase):
   def setUp(self):
     self.recipe = Recipe.objects.create(name="Cucumber Salad")
-    Ingredient.objects.create(
-      recipe=self.recipe,
-      name="Cucmber",
-      quantity="1"
-    )
-    Ingredient.objects.create(
-      recipe=self.recipe,
-      name="Vinegar",
-      quantity="1/2 Cup"
-    )
+    cucumber, _ = Ingredient.objects.get_or_create(name="Cucmber")
+    RecipeIngredient.objects.get_or_create(recipe=self.recipe, ingredient=cucumber, quantity="1")
+    vinegar, _ = Ingredient.objects.get_or_create(name="Vinegar")
+    RecipeIngredient.objects.get_or_create(recipe=self.recipe, ingredient=vinegar, quantity="1/2 Cup")
 
   def test_200_on_valid_recipes_view(self):
     response = self.client.get(reverse("recipes:view", kwargs={"id": self.recipe.id}))
     self.assertEqual(response.status_code, 200)
     self.assertContains(response, "Cucumber Salad")
-    self.assertContains(response, "Vinegar")
+    self.assertContains(response, "vinegar")
 
   def test_404_on_invalid_recipes_view(self):
     response = self.client.get(reverse("recipes:view", kwargs={"id": self.recipe.id + 1}))

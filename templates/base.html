@@ -1,11 +1,18 @@
 {% load static %}
 <html>
   <head>
-    {% block title %}Cofa House Recipes{% endblock %}
+    <title>
+      {% block title %}Cofa House Recipes{% endblock %}
+    </title>
     <link rel="stylesheet" href="{% static 'css/tailwind-bundle.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Elms+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
-  <body>
+  <body class="bg-cream bg-noise">
+    <div id="navbar-root"></div>
     {% block content %}{% endblock %}
     {% block scripts %}{% endblock %}
+    <script type="module" src="{% static 'js/nav-bar-bundle.js' %}"></script>
   </body>
 </html>

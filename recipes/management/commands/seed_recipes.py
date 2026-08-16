@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from recipes.models import Recipe, Ingredient
+from recipes.models import Recipe, Ingredient, RecipeIngredient
 
 RECIPES = [
   {
@@ -89,13 +89,14 @@ class Command(BaseCommand):
 
   def handle(self, *args, **options):
     if options["reset"]:
-      Ingredient.objects.all().delete()
       Recipe.objects.all().delete()
+      Ingredient.objects.all().delete()
     created = 0
     for recipe_data in RECIPES:
       recipe_obj, was_created = Recipe.objects.get_or_create(name=recipe_data["name"])
       for ingredient in recipe_data["ingredients"]:
-        Ingredient.objects.get_or_create(name=ingredient["name"], quantity=ingredient["quantity"], recipe=recipe_obj)
+        ingredient_object, _ = Ingredient.objects.get_or_create(name=Ingredient.normalize(ingredient["name"]))
+        RecipeIngredient.objects.get_or_create(recipe=recipe_obj, ingredient=ingredient_object, quantity=ingredient["quantity"])
       created += was_created
 
     self.stdout.write(self.style.SUCCESS(f"Created {created} recipe(s), skipped {len(RECIPES) - created} existing."))

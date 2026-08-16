@@ -15,7 +15,10 @@ A Django app for managing recipes, with a Vite-built React frontend bundle serve
 - `cofa_house_recipes/` — Django project (settings, urls, wsgi)
 - `recipes/` — the recipes app (models, views, templates)
 - `templates/` — Django templates
-- `assets/` — React frontend source (`.jsx` components), built by Vite
+- `assets/` — React frontend source, built by Vite
+  - `assets/entries/` — one mounting file per page (`createRoot(...).render(...)`), registered in `vite.config.js`
+  - `assets/pages/` — top-level page components, each rendered by one file in `entries/`
+  - `assets/components/` — reusable pieces shared across pages (`Button`, `Logo`, `NavBar`, `RecipeCard`)
 - `static/` — Vite's build output, plus any static assets checked straight into `static/css` and `static/images`
 - `staticfiles/` — `collectstatic` output, generated at build/deploy time only (not checked in)
 
@@ -24,27 +27,48 @@ A Django app for managing recipes, with a Vite-built React frontend bundle serve
 Views pass data to templates as plain context, same as before. Templates hand that data to React via
 [`json_script`](https://docs.djangoproject.com/en/6.1/ref/templates/builtins/#json-script), which
 safely serializes it into a `<script type="application/json">` tag. The React entrypoint
-(`assets/index.jsx`) reads that tag and renders the app into `<div id="root">`.
+(`assets/entries/index.jsx`) reads that tag and renders the app into `<div id="root">`.
 
 See `recipes/views.py` (builds `recipes_data`), `templates/recipes/view_all.html`
-(`{{ recipes_data|json_script:"recipes-data" }}`), and `assets/index.jsx` /
-`assets/RecipeList.jsx` for the pattern to follow when adding new React-backed views.
+(`{{ recipes_data|json_script:"recipes-data" }}`), and `assets/entries/index.jsx` /
+`assets/pages/RecipeList.jsx` for the pattern to follow when adding new React-backed views.
 
 ## Local development — SQLite, no Docker
 
-Requirements: Python 3.14, [uv](https://docs.astral.sh/uv/), Node 22+.
+Requirements: Python 3.14, [uv](https://docs.astral.sh/uv/), [nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
 ```bash
 cp .env.example .env
 uv sync --group dev
+nvm install
+nvm use
 npm install
 
 uv run python manage.py migrate
 uv run python manage.py ensure_superuser
 uv run python manage.py seed_recipes
-npm run build -- --watch &
+```
+
+Then run these two in **separate terminal tabs**, one each — not backgrounded with `&` in the same
+tab. Each is now its own foreground process, so `Ctrl+C` in either tab stops exactly that one, with
+no orphaned processes left running after you're done:
+
+```bash
+# Terminal 1
+npm run build -- --watch
+```
+
+```bash
+# Terminal 2
 uv run python manage.py runserver
 ```
+
+**Frontend changes not showing up?** Check two things: (1) `staticfiles/` shouldn't exist locally —
+it's deploy-only output, and if it's there WhiteNoise will serve stale files from it instead of your
+live `static/` build (delete it if so); (2) confirm only one `npm run build -- --watch` process is
+running (`ps aux | grep vite` — a leftover from backgrounding it with `&` in an old session is the
+usual cause of duplicates). If it's still stale after that, hard-refresh with devtools' "Disable
+cache" checked.
 
 Leave `DATABASE_URL` unset in `.env` and the app falls back to `db.sqlite3` in the project root.
 

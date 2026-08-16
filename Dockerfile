@@ -1,5 +1,5 @@
 # --- Stage 1: build frontend assets with Vite ---
-FROM node:22-slim AS assets
+FROM node:24.19.0-slim AS assets
 
 WORKDIR /app
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .models import Recipe
+from .models import Recipe, Ingredient
 from .forms import RecipeForm, IngredientFormSet
 from django.db import transaction
 from django.middleware.csrf import get_token
@@ -17,12 +17,21 @@ def _ingredients_from_post(post_data):
     for i in range(total_forms)
   ]
 
-def _create_context(request, recipe_name="", ingredients=None):
+def _create_context(request, recipe_name="", ingredients=None, suggestions=None):
     return {
         "csrf_token": get_token(request),
         "recipe": {"name": recipe_name},
         "ingredients": ingredients or [{"name": "", "quantity": ""}],
+        "suggestions": suggestions or []
     }
+
+def _ingredient_create_confirmation(ingredient_name, confirm_create): 
+  if confirm_create:
+    return None
+  matches = Ingredient.check_existing_ingredients(ingredient_name)
+  if not matches or matches[0] == ingredient_name:
+    return None
+  return matches[0]
 
 class RecipesViewAll(View):
   def get(self, request):
@@ -45,6 +54,22 @@ class RecipesCreate(View):
         _ingredients_from_post(request.POST)
       )
       return render(request, "recipes/create.html", context)
+    suggestions = [
+      (i, s)
+      for i, form in enumerate(ingredient_formset.forms)
+      if (s := _ingredient_create_confirmation(
+        form.cleaned_data['name'], 
+        request.POST.get(f"ingredients-{i}-confirmed")
+      ))
+    ]
+    if suggestions:
+      context = _create_context(
+        request, 
+        request.POST.get("name", ""),
+        _ingredients_from_post(request.POST),
+        suggestions
+      )
+      return render(request, "recipes/create.html", context)
     with transaction.atomic():
       recipe_form.save()
       ingredient_formset.save()
@@ -54,7 +79,8 @@ class RecipesView(View):
   def get(self, request, id):
     recipe = get_object_or_404(Recipe, id=id)
     ingredients = recipe.ingredients.all()
-    return render(request, 'recipes/view.html', {
-      'recipe': recipe,
-      'ingredients': ingredients,
-    })
+    context = {
+      "recipe": {"name": recipe.name},
+      "ingredients": list(ingredients.values("quantity", "ingredient__name")),
+    }
+    return render(request, 'recipes/view.html', context)
