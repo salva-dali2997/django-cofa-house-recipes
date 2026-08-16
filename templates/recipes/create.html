@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div id="root"></div>
+{{ csrf_token|json_script:"csrf-token" }}
+{{ recipe|json_script:"recipe" }}
+{{ ingredients|json_script:"ingredients" }}
+{{ suggestions|json_script:"suggestions" }}
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="module" src="{% static 'js/create-recipe-bundle.js' %}"></script>
+
+{% endblock %}

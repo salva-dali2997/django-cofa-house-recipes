@@ -33,6 +33,7 @@ dependencies = [
     { name = "django" },
     { name = "django-environ" },
     { name = "psycopg", extra = ["binary"] },
+    { name = "whitenoise" },
 ]
 
 [package.dev-dependencies]
@@ -41,7 +42,6 @@ dev = [
 ]
 prod = [
     { name = "gunicorn" },
-    { name = "whitenoise" },
 ]
 
 [package.metadata]
@@ -49,14 +49,12 @@ requires-dist = [
     { name = "django", specifier = ">=6.1" },
     { name = "django-environ", specifier = ">=0.14.0" },
     { name = "psycopg", extras = ["binary"], specifier = ">=3.3.4" },
+    { name = "whitenoise", specifier = ">=6.11.0" },
 ]
 
 [package.metadata.requires-dev]
 dev = [{ name = "django-debug-toolbar", specifier = ">=7.0.0" }]
-prod = [
-    { name = "gunicorn", specifier = ">=26.0.0" },
-    { name = "whitenoise", specifier = ">=6.11.0" },
-]
+prod = [{ name = "gunicorn", specifier = ">=26.0.0" }]
 
 [[package]]
 name = "django-debug-toolbar"

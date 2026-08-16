@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div id="root"></div>
+{{ recipe|json_script:"recipe" }}
+{{ ingredients|json_script:"ingredients" }}
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="module" src="{% static 'js/view-recipe-bundle.js' %}"></script>
+
+{% endblock %}

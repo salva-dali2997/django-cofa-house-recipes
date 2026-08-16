@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div id="root"></div>
+{{ recipes_data|json_script:"recipes-data" }}
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="module" src="{% static 'js/index-bundle.js' %}"></script>
+
+{% endblock %}

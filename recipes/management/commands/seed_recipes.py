@@ -1,33 +1,109 @@
 from django.core.management.base import BaseCommand
 
-from recipes.models import Recipe
+from recipes.models import Recipe, Ingredient, RecipeIngredient
 
-RECIPE_NAMES = [
-    "Pancakes",
-    "Spaghetti",
-    "Grilled Cheese",
-    "Caesar Salad",
-    "Tomato Soup",
-    "Curry",
-    "Tacos",
-    "Stir Fry",
-    "Banana Bread",
-    "Mac and Cheese",
-    "Fried Rice",
-    "Omelette",
-    "Chili",
-    "Pizza",
-    "Lasagna",
+RECIPES = [
+  {
+    "name": "Watermelon Mint Salad",
+    "ingredients": [
+      {"name": "Watermelon", "quantity": "1"},
+      {"name": "Mint", "quantity": "5 sprigs"},
+      {"name": "Salt", "quantity": "2 tsp"},
+      {"name": "Lemon", "quantity": "1"},
+    ]
+  },
+  {
+    "name": "Ants on a Log",
+    "ingredients": [
+      {"name": "Celery", "quantity": "5"},
+      {"name": "Peanut Butter", "quantity": "5 tbsp"},
+      {"name": "Raisins", "quantity": "1 bag"},
+    ]
+  },
+  {
+    "name": "Spaghetti",
+    "ingredients": [
+      {"name": "Pasta", "quantity": "1 box"},
+      {"name": "Sauce", "quantity": "1 Can"},
+    ]
+  },
+  {
+    "name": "Grilled Cheese",
+    "ingredients": [
+      {"name": "Bread", "quantity": "2 slices"},
+      {"name": "Cheese", "quantity": "1 cup"},
+    ]
+  },
+  {
+    "name": "Caesar Salad",
+    "ingredients": [
+      {"name": "Romaine Lettuce", "quantity": "1 Head"},
+      {"name": "Parmesan Cheese", "quantity": "1/4 cup"},
+      {"name": "Caesar Dressing", "quantity": "1/4 cup"},
+    ]
+  },
+  {
+    "name": "Tomato Soup",
+    "ingredients": [
+      {"name": "Tomatoes", "quantity": "5"},
+      {"name": "Broth", "quantity": "1 cup"},
+    ]
+  },
+  {
+    "name": "Tacos",
+    "ingredients": [
+      {"name": "Tortillas", "quantity": "2"},
+      {"name": "Fake Meat", "quantity": "1 cup"},
+      {"name": "Onion", "quantity": "1"},
+      {"name": "Cilantro", "quantity": "1 bushel"},
+    ]
+  },
+  {
+    "name": "Mac and Cheese",
+    "ingredients": [
+      {"name": "Macaroni", "quantity": "1 box"},
+      {"name": "Cheese", "quantity": "1 cup"},
+    ]
+  },
+  {
+    "name": "Fried Rice",
+    "ingredients": [
+      {"name": "Rice", "quantity": "1 cup"},
+      {"name": "Oil", "quantity": "2 tbsp"},
+      {"name": "Egg", "quantity": "1 egg"},
+    ]
+  },
+  {
+    "name": "Omelette",
+    "ingredients": [
+      {"name": "Egg", "quantity": "2"},
+      {"name": "Spinach", "quantity": "1 cup"},
+      {"name": "Feta", "quantity": "2 tbsp"},
+    ]
+  }
 ]
 
 
 class Command(BaseCommand):
-    help = "Seeds a handful of simple recipes for local dev, skipping any that already exist."
+  help = "Seeds a handful of simple recipes for local dev, skipping any that already exist."
 
-    def handle(self, *args, **options):
-        created = 0
-        for name in RECIPE_NAMES:
-            _, was_created = Recipe.objects.get_or_create(name=name)
-            created += was_created
+  def handle(self, *args, **options):
+    if options["reset"]:
+      Recipe.objects.all().delete()
+      Ingredient.objects.all().delete()
+    created = 0
+    for recipe_data in RECIPES:
+      recipe_obj, was_created = Recipe.objects.get_or_create(name=recipe_data["name"])
+      for ingredient in recipe_data["ingredients"]:
+        ingredient_object, _ = Ingredient.objects.get_or_create(name=Ingredient.normalize(ingredient["name"]))
+        RecipeIngredient.objects.get_or_create(recipe=recipe_obj, ingredient=ingredient_object, quantity=ingredient["quantity"])
+      created += was_created
 
-        self.stdout.write(self.style.SUCCESS(f"Created {created} recipe(s), skipped {len(RECIPE_NAMES) - created} existing."))
+    self.stdout.write(self.style.SUCCESS(f"Created {created} recipe(s), skipped {len(RECIPES) - created} existing."))
+
+  def add_arguments(self, parser):
+    parser.add_argument(
+      "--reset",
+      action="store_true",
+      help="Delete all existing recipes and ingredients before seeding."
+    )
