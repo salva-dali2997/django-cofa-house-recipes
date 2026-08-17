@@ -22,8 +22,8 @@ function RecipeCreate({ context }) {
     setConfirm(confirm_create => confirm_create.with(indexToUpdate, true));
   }
   return (
-    <div>
-      <h1>Create a Recipe</h1>
+    <div className="text-rust ml-10">
+      <h1 className="text-3xl font-bold mb-2">Create a Recipe</h1>
       <form action="/recipes/create" method="post">
       <input type="hidden" name="csrfmiddlewaretoken" value={context["csrf_token"]}></input>
         <div>
