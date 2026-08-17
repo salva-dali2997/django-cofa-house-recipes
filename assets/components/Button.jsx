@@ -8,7 +8,7 @@
 */
 
 function Button({ type="button", className, onClick, children, href }) {
-  const baseClasses = "border border-black py-2 px-4 rounded-full"
+  const baseClasses = "bg-peach hover:bg-rust hover:text-cream py-2 px-4 rounded-full"
   return (
     !href ? 
       <button 
