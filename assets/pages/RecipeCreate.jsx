@@ -26,8 +26,8 @@ function RecipeCreate({ context }) {
       <h1 className="text-3xl font-bold mb-2">Create a Recipe</h1>
       <form action="/recipes/create" method="post">
       <input type="hidden" name="csrfmiddlewaretoken" value={context["csrf_token"]}></input>
-        <div>
-          <label htmlFor="name">Recipe Name:</label>
+        <div className="mb-5 text-xl">
+          <label htmlFor="name">Recipe Name: </label>
           <input type="text" id="name" name="name" placeholder="Recipe" defaultValue={context.recipe.name} required />
         </div>
         {ingredients.map((ingredient, index) => {
