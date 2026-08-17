@@ -33,14 +33,16 @@ function RecipeCreate({ context }) {
         {ingredients.map((ingredient, index) => {
           const suggestion = suggestions_object[index];
           return (
-            <div key={index} className="space-y-3">
-              <label htmlFor="ingredient">Ingredient Name:</label>
-              <input type="text" id={`ingredient-${index}`} name={`ingredients-${index}-name`} 
+            <div key={index} className="space-y-3 text-xl">
+              <label htmlFor="ingredient">Ingredient Name: </label>
+              <input type="text" id={`ingredient-${index}`} 
+                name={`ingredients-${index}-name`} 
                 placeholder="Ingredient" value={ingredient.name} 
                 onChange={(event) => {
                   updateIngredientName(index, event.target.value); 
                   setConfirm(confirm_create => confirm_create.with(index, false));
                 }}/>
+              <label htmlFor="quantity">Quantity: </label>
               <input type="text" id={`quantity-${index}`} name={`ingredients-${index}-quantity`} placeholder="Quantity" defaultValue={ingredient.quantity}/>
               {suggestion && !confirm_create[index] ? 
                 <div className="flex gap-x-2">
