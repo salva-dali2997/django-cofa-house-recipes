@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import Button from '../components/Button.jsx'
 
-// TODO: convert buttons to component Button
 function RecipeCreate({ context }) {
   const suggestions_object = Object.fromEntries(context.suggestions);
   const [ingredients, setIngredients] = useState(context.ingredients);
@@ -47,8 +47,8 @@ function RecipeCreate({ context }) {
               {suggestion && !confirm_create[index] ? 
                 <div className="flex gap-x-2">
                   did you mean {suggestion}? you entered {ingredient.name}
-                  <button type="button" className="border border-black hover:font-bold py-2 px-4 rounded-full" onClick={(event) => acceptSuggestion(index, suggestion)}>Confirm suggestion</button>
-                  <button type="button" className="border border-black hover:font-bold py-2 px-4 rounded-full" onClick={(event) => denySuggestion(index)}>Deny suggestion</button>
+                  <Button className="text-black" onClick={(event) => acceptSuggestion(index, suggestion)} children="Confirm suggestion"></Button>
+                  <Button className="text-black" onClick={(event) => denySuggestion(index, suggestion)} children="Deny suggestion"></Button>
                 </div>
               :null}
               <input type="hidden" name={`ingredients-${index}-confirmed`} value={confirm_create[index] ? true : ""} readOnly/>
@@ -56,15 +56,15 @@ function RecipeCreate({ context }) {
           )
         }
         )}
-        <div className="mb-5">
-          <button type="button" className="border border-black hover:font-bold py-2 px-4 rounded-full" onClick={addIngredient}>Add Ingredient</button>
+        <div>
+          <Button className="text-black" onClick={addIngredient} children="Add Ingredient"></Button>
         </div>
         <input type="hidden" name="ingredients-TOTAL_FORMS" value={ingredients.length} />
         <input type="hidden" name="ingredients-INITIAL_FORMS" value="0" />
         <input type="hidden" name="ingredients-MIN_NUM_FORMS" value="0" />
         <input type="hidden" name="ingredients-MAX_NUM_FORMS" value="1000" />
-        <div>
-          <button type="submit" className="border border-black hover:font-bold py-2 px-4 rounded-full">Create Recipe</button>
+        <div className="mt-8">
+          <Button type="submit" className="text-black" children="Create Recipe"></Button>
         </div>
       </form>
     </div>
