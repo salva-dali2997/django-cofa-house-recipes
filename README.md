@@ -129,6 +129,11 @@ docker run -p 8000:8000 --env-file .env cofa-house-recipes
 
 ## Run tests
 
+Ensure that the .env is in place
+```bash
+cp .env.example .env
+```
+
 Tests live in `recipes/tests.py`
 
 ```bash
