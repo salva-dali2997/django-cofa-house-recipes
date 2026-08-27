@@ -57,14 +57,14 @@ function RecipeCreate({ context }) {
         }
         )}
         <div>
-          <Button className="text-black" onClick={addIngredient} children="Add Ingredient"></Button>
+          <Button className="text-black" onClick={addIngredient}>Add Ingredient</Button>
         </div>
         <input type="hidden" name="ingredients-TOTAL_FORMS" value={ingredients.length} />
         <input type="hidden" name="ingredients-INITIAL_FORMS" value="0" />
         <input type="hidden" name="ingredients-MIN_NUM_FORMS" value="0" />
         <input type="hidden" name="ingredients-MAX_NUM_FORMS" value="1000" />
         <div className="mt-8">
-          <Button type="submit" className="text-black" children="Create Recipe"></Button>
+          <Button type="submit" className="text-black">Create Recipe</Button>
         </div>
       </form>
     </div>
