@@ -4,7 +4,7 @@ from .models import Recipe, Ingredient
 from .forms import RecipeForm, IngredientFormSet
 from django.db import transaction
 from django.middleware.csrf import get_token
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import LoginRequiredMixin
 
 def _ingredients_from_post(post_data):
   total_forms = int(post_data.get("ingredients-TOTAL_FORMS", 0))
@@ -41,8 +41,7 @@ class RecipesViewAll(View):
     context = {"recipes_data": recipes_data}
     return render(request, "recipes/view_all.html", context)
 
-@login_required
-class RecipesCreate(View):
+class RecipesCreate(LoginRequiredMixin, View):
   def get(self, request):
     return render(request, "recipes/create.html", _create_context(request))
   
