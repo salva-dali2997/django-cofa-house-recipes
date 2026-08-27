@@ -4,7 +4,7 @@ from .models import Recipe, Ingredient
 from .forms import RecipeForm, IngredientFormSet
 from django.db import transaction
 from django.middleware.csrf import get_token
-from django.contrib.auth.decorators import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def _ingredients_from_post(post_data):
   total_forms = int(post_data.get("ingredients-TOTAL_FORMS", 0))
