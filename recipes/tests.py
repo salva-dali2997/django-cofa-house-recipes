@@ -1,5 +1,6 @@
 from django.test import TestCase, SimpleTestCase, override_settings
 from django.urls import reverse
+from django.contrib.auth.models import User
 from .models import Recipe, Ingredient, RecipeIngredient
 from .forms import IngredientForm
 
@@ -9,6 +10,13 @@ from .forms import IngredientForm
   "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
 })
 class RecipeCreateTest(TestCase):
+  def setUp(self):
+    self.user = User.objects.create_user(
+      username="testuser", 
+      email="test@example.com", 
+      password="securepassword123"
+    )
+
   def test_valid_post_creates_recipes_and_ingredients(self):
     data = {
       "name": "Salad",
@@ -21,6 +29,7 @@ class RecipeCreateTest(TestCase):
       "ingredients-1-name": "Dressing",
       "ingredients-1-quantity": "2 tbsp",
     }
+    self.client.force_login(self.user)
     response = self.client.post(reverse("recipes:create"), data)
     self.assertEqual(Recipe.objects.count(), 1)
     recipe = Recipe.objects.get(name="Salad")
@@ -39,11 +48,13 @@ class RecipeCreateTest(TestCase):
       "ingredients-1-name": "Dressing",
       "ingredients-1-quantity": "2 tbsp",
     }
+    self.client.force_login(self.user)
     response = self.client.post(reverse("recipes:create"), data)
     self.assertEqual(Recipe.objects.count(), 0)
     self.assertEqual(response.status_code, 200)
 
   def test_get_recipes_renders_empty_form(self):
+    self.client.force_login(self.user)
     response = self.client.get(reverse("recipes:create"))
     self.assertEqual(response.status_code, 200)
     self.assertContains(response, 'id="root"')
