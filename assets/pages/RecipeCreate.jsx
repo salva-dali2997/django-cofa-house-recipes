@@ -47,8 +47,8 @@ function RecipeCreate({ context }) {
               {suggestion && !confirm_create[index] ? 
                 <div className="flex gap-x-2">
                   did you mean {suggestion}? you entered {ingredient.name}
-                  <Button className="text-black" onClick={(event) => acceptSuggestion(index, suggestion)} children="Confirm suggestion"></Button>
-                  <Button className="text-black" onClick={(event) => denySuggestion(index, suggestion)} children="Deny suggestion"></Button>
+                  <Button className="text-black" onClick={() => acceptSuggestion(index, suggestion)}>Confirm suggestion</Button>
+                  <Button className="text-black" onClick={() => denySuggestion(index, suggestion)}>Deny suggestion</Button>
                 </div>
               :null}
               <input type="hidden" name={`ingredients-${index}-confirmed`} value={confirm_create[index] ? true : ""} readOnly/>
