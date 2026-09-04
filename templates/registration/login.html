@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div id="root"></div>
+{{ csrf_token|json_script:"csrf-token" }}
+{{ username|json_script:"username" }}
+{{ password|json_script:"password" }}
+
+{% endblock %}
+
+{% block scripts %}
+
+<script type="module" src="{% static 'js/login-bundle.js' %}"></script>
+
+{% endblock %}
