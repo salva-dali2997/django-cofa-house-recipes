@@ -24,3 +24,8 @@
 .nav-fade {
   background: linear-gradient(to bottom, var(--color-sage) 0%, var(--color-cream) 100%);
 }
+
+input:-webkit-autofill, input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, input:-webkit-autofill:active {
+  box-shadow:  0 0 0 1000px var(--color-cream) inset;
+}
