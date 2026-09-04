@@ -19,6 +19,8 @@ export default defineConfig({
         'create-recipe': path.resolve(__dirname, './assets/entries/create.jsx'),
         'view-recipe': path.resolve(__dirname, './assets/entries/view.jsx'),
         'nav-bar': path.resolve(__dirname, './assets/entries/nav.jsx'),
+        'login': path.resolve(__dirname, './assets/entries/login.jsx'),
+        'signup': path.resolve(__dirname, './assets/entries/signup.jsx'),
       },
       output: {
         // Output JS bundles to js/ directory with -bundle suffix
