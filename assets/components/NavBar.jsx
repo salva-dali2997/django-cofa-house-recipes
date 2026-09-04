@@ -13,6 +13,8 @@ function NavBar(){
     <div className="flex flex-row gap-x-20 text-3xl">
       <a href="/recipes/">All Recipes</a>
       <a href="/recipes/create">Create Recipe</a>
+      <a href="/accounts/login">Login</a>
+      <a href="/accounts/logout-confirm">Logout</a>
     </div>
   </nav>
   {/* gradient */}
