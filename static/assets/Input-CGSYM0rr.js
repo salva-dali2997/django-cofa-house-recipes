@@ -1,0 +1,1 @@
+import{j as u}from"./client-BP_izQ9q.js";function i({className:s,type:e="text",name:n,children:o,required:r,id:t}){return u.jsx("input",{className:`py-2 px-4 border-b-2 rounded-md focus:outline-none focus:ring-2 focus:ring-rust bg-cream ${s||""}`,type:e,name:n,required:r,id:t,children:o})}export{i as I};

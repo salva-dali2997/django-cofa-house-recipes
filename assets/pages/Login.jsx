@@ -9,7 +9,7 @@ function Login({ context }) {
         <label>Username: <Input type="text" name="username" required/></label>
         <label>Password: <Input type="password" name="password" required/></label>
         {/* <button type="submit">Log In</button> */}
-        <Button>Log In</Button>
+        <Button type="submit">Log In</Button>
       </form>
     </div>
   );

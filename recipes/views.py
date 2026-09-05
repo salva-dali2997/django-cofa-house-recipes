@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from .models import Recipe, Ingredient
+from django.http import JsonResponse
+from .models import Recipe, Ingredient, Comment
 from .forms import RecipeForm, IngredientFormSet
 from django.db import transaction
 from django.middleware.csrf import get_token
@@ -80,8 +81,20 @@ class RecipesView(View):
   def get(self, request, id):
     recipe = get_object_or_404(Recipe, id=id)
     ingredients = recipe.ingredients.all()
+    comments = recipe.comments.all()
     context = {
-      "recipe": {"name": recipe.name},
+      "recipe": {"id": recipe.id, "name": recipe.name},
       "ingredients": list(ingredients.values("quantity", "ingredient__name")),
+      "comments": list(comments.values("content")),
+      "csrf_token": get_token(request)
     }
     return render(request, 'recipes/view.html', context)
+
+class CommentsCreate(View):
+  def post(self, request):
+    recipe = get_object_or_404(Recipe, id=request.POST.get("recipe_id"))
+    content = request.POST.get("comment", "").strip()
+    if not content:
+      return JsonResponse({"error": "Comment cannot be empty"}, status=400)
+    comment = Comment.objects.create(recipe=recipe, content=content)
+    return JsonResponse({"content": comment.content})

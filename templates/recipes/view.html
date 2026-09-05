@@ -4,8 +4,10 @@
 {% block content %}
 
 <div id="root"></div>
+{{ csrf_token|json_script:"csrf_token" }}
 {{ recipe|json_script:"recipe" }}
 {{ ingredients|json_script:"ingredients" }}
+{{ comments|json_script:"comments" }}
 
 {% endblock %}
 

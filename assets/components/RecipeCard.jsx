@@ -4,9 +4,11 @@ function RecipeCard({recipe_id, recipe_name}) {
     <li>
       <a 
       href={`/recipes/${recipe_id}`}
-      className="bg-peach px-4 py-8 rounded-xl hover:bg-rust 
+      className="px-4 py-8 rounded-xl text-rust-dark2 text-outline
       hover:text-cream text-center transition-colors 
-        shadow-md block w-full text-xl">
+        shadow-lg block w-full text-2xl font-bold
+        bg-radial-[at_50%_75%] from-dark-salmon from-85% to-peach
+        active:scale-95 border border-gray-50">
       {recipe_name}</a>
     </li>
   )
