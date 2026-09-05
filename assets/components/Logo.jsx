@@ -5,7 +5,7 @@ const Logo = ({className, ...props}) => (
     viewBox="-20 0 400 300"
     // width={75}
     fill="currentColor"
-    className={`rotate-270 ${className || ""}`}
+    className={`rotate-270 shrink-0 ${className || ""}`}
     {...props}
     >
     <title>Cofa House Logo</title>
