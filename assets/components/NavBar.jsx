@@ -25,7 +25,7 @@ function NavBar({ context }){
         </div>
         <button id="menu-btn" className="md:hidden" onClick={() => setIsMenuOpen((prev) => !prev)}>
           <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
         {/* right hand side div */}
