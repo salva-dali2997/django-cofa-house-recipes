@@ -1,0 +1,1 @@
+import{j as r}from"./client-BP_izQ9q.js";function x({type:e="button",className:t,onClick:n,children:s,href:o}){const a="bg-dark-salmon hover:bg-rust hover:text-cream py-2 px-4 rounded-full";return o?r.jsx("a",{className:`${a} ${t||""}`,href:o,children:s}):r.jsx("button",{type:e,className:`${a} ${t||""}`,onClick:n,children:s})}export{x as B};
