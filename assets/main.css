@@ -2,13 +2,17 @@
 
 @theme {
   --color-sage: #A4B885;
+  --color-sage-dark: #798861;
   --color-rust: #D46D25;
-  /* --color-peach: #FDC086; */
-  --color-peach: #FFB066;
+  --color-rust-dark: #B85E1F;
+  --color-rust-dark2: #9D4F19;
+  /* --color-peach: #E9A372; */
+  --color-peach: #FD879B;
+  --color-dark-salmon: #E6A38D;
   /* --color-peach: #FFA34D; */
   /* --color-peach: #FF9633; */
   --color-cream: #FFF6A1;
-  --font-sans: 'Elms Sans', sans-serif;
+  --font-sans: 'Darumadrop One', sans-serif;
 }
 
 .bg-noise {
