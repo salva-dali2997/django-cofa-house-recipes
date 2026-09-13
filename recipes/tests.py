@@ -3,84 +3,104 @@ from django.urls import reverse
 from .models import Recipe, Ingredient, RecipeIngredient
 from .forms import IngredientForm
 
+
 # Override static file generation dependency for tests
-@override_settings(STORAGES={
-  "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-  "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
-})
+@override_settings(
+    STORAGES={
+        "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
+        },
+    }
+)
 class RecipeCreateTest(TestCase):
-  def test_valid_post_creates_recipes_and_ingredients(self):
-    data = {
-      "name": "Salad",
-      "ingredients-TOTAL_FORMS": "2",
-      "ingredients-INITIAL_FORMS": "0",
-      "ingredients-MIN_NUM_FORMS": "0",
-      "ingredients-MAX_NUM_FORMS": "1000",
-      "ingredients-0-name": "Lettuce",
-      "ingredients-0-quantity": "8 oz",
-      "ingredients-1-name": "Dressing",
-      "ingredients-1-quantity": "2 tbsp",
-    }
-    response = self.client.post(reverse("recipes:create"), data)
-    self.assertEqual(Recipe.objects.count(), 1)
-    recipe = Recipe.objects.get(name="Salad")
-    self.assertEqual(recipe.ingredients.count(), 2)
-    self.assertRedirects(response, reverse("recipes:view_all"))
+    def setUp(self):
+        self.data = {
+            "name": "Salad",
+            "ingredients-TOTAL_FORMS": "2",
+            "ingredients-INITIAL_FORMS": "0",
+            "ingredients-MIN_NUM_FORMS": "0",
+            "ingredients-MAX_NUM_FORMS": "1000",
+            "ingredients-0-name": "Lettuce",
+            "ingredients-0-quantity": "8 oz",
+            "ingredients-1-name": "Dressing",
+            "ingredients-1-quantity": "2 tbsp",
+        }
 
-  def test_invalid_post_does_not_create_recipe_or_ingredients(self):
-    data = {
-      "name": "Salad",
-      "ingredients-TOTAL_FORMS": "2",
-      "ingredients-INITIAL_FORMS": "0",
-      "ingredients-MIN_NUM_FORMS": "0",
-      "ingredients-MAX_NUM_FORMS": "1000",
-      "ingredients-0-name": "",
-      "ingredients-0-quantity": "8 oz",
-      "ingredients-1-name": "Dressing",
-      "ingredients-1-quantity": "2 tbsp",
-    }
-    response = self.client.post(reverse("recipes:create"), data)
-    self.assertEqual(Recipe.objects.count(), 0)
-    self.assertEqual(response.status_code, 200)
+    def test_valid_post_creates_recipes_and_ingredients(self):
+        response = self.client.post(reverse("recipes:create"), self.data)
+        self.assertEqual(Recipe.objects.count(), 1)
+        recipe = Recipe.objects.get(name="Salad")
+        self.assertEqual(recipe.ingredients.count(), 2)
+        self.assertRedirects(response, reverse("recipes:view_all"))
 
-  def test_get_recipes_renders_empty_form(self):
-    response = self.client.get(reverse("recipes:create"))
-    self.assertEqual(response.status_code, 200)
-    self.assertContains(response, 'id="root"')
-    self.assertContains(response, 'id="recipe"')
-    self.assertContains(response, 'id="ingredients"')
+    def test_invalid_post_does_not_create_recipe_or_ingredients(self):
+        self.data["ingredients-0-name"] = ""
+        response = self.client.post(reverse("recipes:create"), self.data)
+        self.assertEqual(Recipe.objects.count(), 0)
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_recipes_renders_empty_form(self):
+        response = self.client.get(reverse("recipes:create"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'id="root"')
+        self.assertContains(response, 'id="recipe"')
+        self.assertContains(response, 'id="ingredients"')
+
+    def test_invalid_total_forms_not_equal_number_of_forms(self):
+        self.data["ingredients-TOTAL_FORMS"] = "3"
+        response = self.client.post(reverse("recipes:create"))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(Recipe.objects.count(), 0)
+        self.assertContains(response, '<title>Create Recipe</title>')
+
+        
+
 
 # Override static file generation dependency for tests
-@override_settings(STORAGES={
-  "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
-  "staticfiles": {"BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"},
-})
+@override_settings(
+    STORAGES={
+        "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage"
+        },
+    }
+)
 class RecipesViewTest(TestCase):
-  def setUp(self):
-    self.recipe = Recipe.objects.create(name="Cucumber Salad")
-    cucumber, _ = Ingredient.objects.get_or_create(name="Cucmber")
-    RecipeIngredient.objects.get_or_create(recipe=self.recipe, ingredient=cucumber, quantity="1")
-    vinegar, _ = Ingredient.objects.get_or_create(name="Vinegar")
-    RecipeIngredient.objects.get_or_create(recipe=self.recipe, ingredient=vinegar, quantity="1/2 Cup")
+    def setUp(self):
+        self.recipe = Recipe.objects.create(name="Cucumber Salad")
+        cucumber, _ = Ingredient.objects.get_or_create(name="Cucmber")
+        RecipeIngredient.objects.get_or_create(
+            recipe=self.recipe, ingredient=cucumber, quantity="1"
+        )
+        vinegar, _ = Ingredient.objects.get_or_create(name="Vinegar")
+        RecipeIngredient.objects.get_or_create(
+            recipe=self.recipe, ingredient=vinegar, quantity="1/2 Cup"
+        )
 
-  def test_200_on_valid_recipes_view(self):
-    response = self.client.get(reverse("recipes:view", kwargs={"id": self.recipe.id}))
-    self.assertEqual(response.status_code, 200)
-    self.assertContains(response, "Cucumber Salad")
-    self.assertContains(response, "vinegar")
+    def test_200_on_valid_recipes_view(self):
+        response = self.client.get(
+            reverse("recipes:view", kwargs={"id": self.recipe.id})
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Cucumber Salad")
+        self.assertContains(response, "vinegar")
 
-  def test_404_on_invalid_recipes_view(self):
-    response = self.client.get(reverse("recipes:view", kwargs={"id": self.recipe.id + 1}))
-    self.assertEqual(response.status_code, 404)
+    def test_404_on_invalid_recipes_view(self):
+        response = self.client.get(
+            reverse("recipes:view", kwargs={"id": self.recipe.id + 1})
+        )
+        self.assertEqual(response.status_code, 404)
+
 
 # Uses SimpleTestCase because nothing
 # is being written to the database
 class IngredientFormTest(SimpleTestCase):
-  def test_blank_name_is_invalid(self):
-    form = IngredientForm(data={"name": "", "quantity": "1 cup"})
-    self.assertFalse(form.is_valid())
-    self.assertIn("name", form.errors)
+    def test_blank_name_is_invalid(self):
+        form = IngredientForm(data={"name": "", "quantity": "1 cup"})
+        self.assertFalse(form.is_valid())
+        self.assertIn("name", form.errors)
 
-  def test_valid_data_is_valid(self):
-    form = IngredientForm(data={"name": "Flour", "quantity": "1 cup"})
-    self.assertTrue(form.is_valid())
+    def test_valid_data_is_valid(self):
+        form = IngredientForm(data={"name": "Flour", "quantity": "1 cup"})
+        self.assertTrue(form.is_valid())
