@@ -15,6 +15,9 @@ wheels/
 # Test db
 db.sqlite3
 
+# Legacy Rails data dump used one-time by import_legacy_data (contains real email/password hash)
+local-copy.db
+
 # Node
 node_modules/
 
