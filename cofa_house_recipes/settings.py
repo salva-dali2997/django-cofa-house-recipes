@@ -26,6 +26,7 @@ DEBUG = env('DEBUG', default='True')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
 DATABASES = {'default': env.db('DATABASE_URL', default=f'sqlite:///{BASE_DIR / "db.sqlite3"}')}
+LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/recipes/'
 LOGOUT_REDIRECT_URL = '/recipes/'
 

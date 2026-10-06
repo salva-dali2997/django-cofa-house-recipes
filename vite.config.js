@@ -18,6 +18,8 @@ export default defineConfig({
         'tailwind': path.resolve(__dirname, './assets/main.css'),
         'create-recipe': path.resolve(__dirname, './assets/entries/create.jsx'),
         'view-recipe': path.resolve(__dirname, './assets/entries/view.jsx'),
+        'today-recipes': path.resolve(__dirname, './assets/entries/today.jsx'),
+        'today-manage': path.resolve(__dirname, './assets/entries/today_manage.jsx'),
         'nav-bar': path.resolve(__dirname, './assets/entries/nav.jsx'),
         'login': path.resolve(__dirname, './assets/entries/login.jsx'),
         'signup': path.resolve(__dirname, './assets/entries/signup.jsx'),

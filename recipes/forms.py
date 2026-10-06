@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 class RecipeForm(forms.ModelForm):
   class Meta:
     model = Recipe
-    fields = ['name']
+    fields = ['name', 'directions']
 
 class IngredientForm(forms.ModelForm):
   class Meta:

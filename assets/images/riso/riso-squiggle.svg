@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 40" width="620" height="40">
+<defs>
+<filter id="a" x="-10%" y="-10%" width="120%" height="120%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="51" result="warp"/>
+  <feDisplacementMap in="SourceGraphic" in2="warp" scale="2" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="62" result="grain"/>
+  <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  4 0 0 0 -0.95" result="speckle"/>
+  <feComposite in="rough" in2="speckle" operator="in"/>
+</filter><filter id="b" x="-10%" y="-10%" width="120%" height="120%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="54" result="warp"/>
+  <feDisplacementMap in="SourceGraphic" in2="warp" scale="2" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="65" result="grain"/>
+  <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  4 0 0 0 -0.95" result="speckle"/>
+  <feComposite in="rough" in2="speckle" operator="in"/>
+</filter>
+</defs>
+<g style="isolation:isolate">
+<g filter="url(#a)" style="mix-blend-mode:multiply"><path d="M10 20 Q 30 4 50 20 T 90 20 T 130 20 T 170 20 T 210 20 T 250 20 T 290 20 T 330 20 T 370 20 T 410 20 T 450 20 T 490 20 T 530 20 T 570 20 T 610 20" fill="none" stroke="#E30B5D" stroke-width="5" stroke-linecap="round"/></g>
+<g filter="url(#b)" transform="translate(4,3)" style="mix-blend-mode:multiply"><path d="M10 20 Q 30 4 50 20 T 90 20 T 130 20 T 170 20 T 210 20 T 250 20 T 290 20 T 330 20 T 370 20 T 410 20 T 450 20 T 490 20 T 530 20 T 570 20 T 610 20" fill="none" stroke="#00754A" stroke-width="2.5" stroke-linecap="round"/></g>
+</g>
+</svg>

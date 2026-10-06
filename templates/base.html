@@ -10,9 +10,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Darumadrop+One&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-cream bg-noise">
+  <body class="bg-cream bg-noise riso-paper">
     <div id="navbar-root"></div>
     {{ user.is_authenticated|json_script:"user_authenticated" }}
+    {{ user.is_superuser|json_script:"user_is_superuser" }}
     {% block content %}{% endblock %}
     {% block scripts %}{% endblock %}
     <script type="module" src="{% static 'js/nav-bar-bundle.js' %}"></script>
