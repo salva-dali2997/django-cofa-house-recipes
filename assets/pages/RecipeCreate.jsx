@@ -91,9 +91,9 @@ function RecipeCreate({ context }) {
                   </div>
                   {suggestion && !confirm_create[index] ?
                     <div className="rounded-lg bg-peach/40 border border-peach px-3 py-2 text-sm text-rust-dark flex flex-wrap items-center gap-2">
-                      <span>Did you mean <strong>{suggestion}</strong>? You entered "{ingredient.name}".</span>
+                      <span>Did you mean <strong>{suggestion}</strong>? You entered “{ingredient.name}”.</span>
                       <div className="flex flex-wrap gap-2 sm:ml-auto">
-                        <Button className="text-sm" onClick={() => acceptSuggestion(index, suggestion)}>Use "{suggestion}"</Button>
+                        <Button className="text-sm" onClick={() => acceptSuggestion(index, suggestion)}>Use “{suggestion}”</Button>
                         <Button className="text-sm" onClick={() => denySuggestion(index, suggestion)}>Keep mine</Button>
                       </div>
                     </div>
