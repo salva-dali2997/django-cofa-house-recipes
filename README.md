@@ -134,8 +134,30 @@ Ensure that the .env is in place
 cp .env.example .env
 ```
 
-Tests live in `recipes/tests.py`
+Tests live in `recipes/tests.py` and `accounts/tests.py`. Run the whole suite (both apps) with:
 
 ```bash
-uv run manage.py test recipes
+uv run manage.py test
 ```
+
+Pass an app label to run just one app's tests, e.g. `uv run manage.py test recipes`.
+
+### Code coverage
+
+Coverage is measured with [`coverage.py`](https://coverage.readthedocs.io/), configured in
+`pyproject.toml` (`[tool.coverage.*]`). Run the suite through it, then see the report:
+
+```bash
+uv run coverage run manage.py test
+uv run coverage report
+```
+
+`coverage report` fails (non-zero exit) if total coverage drops below 95% — see `fail_under` in
+`pyproject.toml`. For a browsable line-by-line view of what's covered:
+
+```bash
+uv run coverage html
+open htmlcov/index.html
+```
+
+`.coverage` and `htmlcov/` are regenerated output, already gitignored.
