@@ -9,7 +9,7 @@ export default defineConfig([
   react.configs.flat.recommended,
   react.configs.flat['jsx-runtime'],
   reactRefresh.configs.vite,
-  globalIgnores(['.venv/', 'static/']),
+  globalIgnores(['.venv/', 'static/', 'htmlcov/']),
   {
     files: ['**/*.{js,jsx,mjs,cjs,ts,tsx}'],
     languageOptions: {
