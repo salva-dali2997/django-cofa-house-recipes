@@ -1,18 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-sage: #A4B885;
-  --color-sage-dark: #798861;
-  --color-rust: #D46D25;
-  --color-rust-dark: #B85E1F;
-  --color-rust-dark2: #9D4F19;
-  /* --color-peach: #E9A372; */
+  --color-sage: #00754A;
+  --color-sage-dark: #005536;
+  --color-rust: #E30B5D;
+  --color-rust-dark: #AD0949;
+  --color-rust-dark2: #7A0734;
   --color-peach: #FD879B;
   --color-dark-salmon: #E6A38D;
-  /* --color-peach: #FFA34D; */
-  /* --color-peach: #FF9633; */
-  --color-cream: #FFF6A1;
-  --font-sans: 'Darumadrop One', sans-serif;
+  --color-cream: #E4E3C8;
+  --color-cream-dark: #D6D4AC;
+  --font-display: 'Darumadrop One', cursive;
 }
 
 .bg-noise {
@@ -21,15 +19,111 @@
   background-blend-mode: overlay;
 }
 
+/* Decorative stroke for large display headings only — not body-sized text,
+   where a stroke this heavy hurts legibility (see main.css history). */
 .text-outline {
   -webkit-text-stroke: 0.2px black;
 }
 
-.nav-fade {
-  background: linear-gradient(to bottom, var(--color-sage) 0%, var(--color-cream) 100%);
+
+/* Keep autofilled inputs on-theme. Delaying the background transition hides Chrome's
+   autofill colour without using an inset box-shadow, which would wipe out any
+   box-shadow the input already has (like the riso offset on the login fields). */
+input:-webkit-autofill, input:-webkit-autofill:hover,
+input:-webkit-autofill:focus, input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--color-rust-dark);
+  caret-color: var(--color-rust-dark);
+  transition: background-color 600000s 0s, color 600000s 0s;
 }
 
-input:-webkit-autofill, input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, input:-webkit-autofill:active {
-  box-shadow:  0 0 0 1000px var(--color-cream) inset;
+/* Riso print textures (assets/images/riso/). The grain sits on a fixed
+   layer behind the content so it reads as paper rather than overlaying text. */
+.riso-paper::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("./images/riso/riso-grain.svg");
+  background-size: 300px;
+  opacity: 0.35;
+}
+
+.title-squiggle {
+  padding-bottom: 1.25rem;
+  background: url("./images/riso/riso-squiggle.svg") no-repeat center bottom / min(14rem, 80%) auto;
+}
+
+@utility bg-gingham {
+  background-image: url("./images/riso/riso-gingham.svg");
+  background-size: 40px;
+}
+
+/* Cream flecks over a solid fill (set the colour with bg-*), like riso ink
+   that didn't fully cover the paper. */
+@utility bg-ink-speckle {
+  background-image: url("./images/riso/riso-speckle.svg");
+  background-size: 200px;
+}
+
+/* Wavy sage edge with a misregistered pink copy; sits under the navbar. */
+.riso-nav-edge {
+  height: 24px;
+  background: url("./images/riso/riso-nav-edge.svg") repeat-x left top / 80px 24px;
+}
+
+/* Offset pink copy behind cream text/logo, like a second ink layer that drifted. */
+.riso-offset {
+  filter: drop-shadow(2px 2px 0 var(--color-rust));
+}
+
+/* Pink squiggle that draws in under a link on hover. */
+.riso-link {
+  background: url("./images/riso/riso-squiggle.svg") no-repeat left bottom / 0% 8px;
+  padding-bottom: 6px;
+  transition: background-size 0.25s ease;
+}
+.riso-link:hover,
+.riso-link:focus-visible {
+  background-size: 100% 8px;
+}
+
+/* Riso checkbox: cream box with an offset shadow; checked = speckled pink ink
+   with a hand-drawn cream tick. */
+.riso-checkbox {
+  appearance: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 2px solid var(--color-rust-dark);
+  border-radius: 0.4rem;
+  background-color: var(--color-cream);
+  box-shadow: 2px 2px 0 var(--color-sage);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+.riso-checkbox:hover {
+  transform: rotate(-4deg);
+}
+.riso-checkbox:checked {
+  border-color: var(--color-rust);
+  background-color: var(--color-rust);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M4.5 12.5 C 6.5 14, 8 16, 9.5 18.5 C 12 13, 15 8.5, 20 5' fill='none' stroke='%23E4E3C8' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
+    url("./images/riso/riso-speckle.svg");
+  background-size: 100% 100%, 120px;
+  transform: rotate(-3deg);
+}
+.riso-checkbox:focus-visible {
+  outline: 2px solid var(--color-rust-dark);
+  outline-offset: 3px;
+}
+
+/* Blobs backdrop for pages rendered by plain Django templates (React pages import the SVG directly). */
+.riso-blobs {
+  background: url("./images/riso/riso-blobs.svg") no-repeat center / contain;
+}
+
+@utility bg-halftone {
+  background-image: url("./images/riso/riso-halftone.svg");
+  background-size: 30px;
 }

@@ -2,12 +2,20 @@
 
 {% block content %}
 
-<div class="mx-auto max-w-sm rounded-xl shadow-md bg-sage p-10 mt-20 text-center flex flex-col gap-y-4 items-center">
-  <p class="text-2xl text-cream">Do you want to log out?</p>
-  <form method="POST" action="{% url 'accounts:logout' %}">
-    {% csrf_token %}
-    <button type="submit" class="bg-dark-salmon hover:bg-rust hover:text-cream py-2 px-4 rounded-full">Log Out</button>
-  </form>
+<div class="relative isolate mx-auto max-w-2xl mt-20 px-4">
+  <div aria-hidden="true" class="riso-blobs absolute left-1/2 top-1/2 -z-10 w-full aspect-[8/5] -translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+  <div class="mx-auto max-w-sm rounded-xl shadow-md bg-sage bg-ink-speckle p-10 text-center flex flex-col gap-y-6 items-center">
+    <p class="font-display text-2xl text-cream riso-offset">Do you want to log out?</p>
+    <form method="POST" action="{% url 'accounts:logout' %}">
+      {% csrf_token %}
+      {# Same classes as assets/components/Button.jsx — keep in sync if the button style changes. #}
+      <button type="submit" class="inline-flex items-center justify-center min-h-11 py-3 px-6 rounded-full font-display tracking-wide
+        bg-rust bg-ink-speckle text-cream shadow-[3px_3px_0_var(--color-rust-dark2)]
+        hover:bg-rust-dark hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[1px_1px_0_var(--color-rust-dark2)]
+        active:translate-x-[3px] active:translate-y-[3px] active:shadow-none transition-all
+        focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cream">Log Out</button>
+    </form>
+  </div>
 </div>
 
 {% endblock %}

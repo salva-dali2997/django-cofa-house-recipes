@@ -6,6 +6,7 @@ class Menu(models.Model):
 
 class Recipe(models.Model):
   name = models.CharField(max_length=40)
+  directions = models.TextField(blank=True, default="")
   created_at = models.DateTimeField(auto_now_add=True)
   menu = models.ManyToManyField(Menu, null=True)
 

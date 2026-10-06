@@ -1,11 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.http import JsonResponse
-from .models import Recipe, Ingredient, Comment
+from django.core.paginator import Paginator
+from .models import Recipe, Ingredient, Comment, Menu
 from .forms import RecipeForm, IngredientFormSet
 from django.db import transaction
 from django.middleware.csrf import get_token
 from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import date
+
+RECIPES_PER_PAGE = 10
+
+def _get_menu():
+  menu = Menu.objects.order_by('id').first()
+  if menu is None:
+    menu = Menu.objects.create(date=date.today())
+  return menu
 
 def _ingredients_from_post(post_data):
   total_forms = int(post_data.get("ingredients-TOTAL_FORMS", 0))
@@ -19,10 +29,10 @@ def _ingredients_from_post(post_data):
     for i in range(total_forms)
   ]
 
-def _create_context(request, recipe_name="", ingredients=None, suggestions=None):
+def _create_context(request, recipe_name="", directions="", ingredients=None, suggestions=None):
     return {
         "csrf_token": get_token(request),
-        "recipe": {"name": recipe_name},
+        "recipe": {"name": recipe_name, "directions": directions},
         "ingredients": ingredients or [{"name": "", "quantity": ""}],
         "suggestions": suggestions or []
     }
@@ -63,8 +73,9 @@ class RecipesCreate(LoginRequiredMixin, View):
     ingredient_formset = IngredientFormSet(request.POST, instance=recipe_form.instance)
     if not (recipe_form.is_valid() and ingredient_formset.is_valid()):
       context = _create_context(
-        request, 
+        request,
         request.POST.get("name", ""),
+        request.POST.get("directions", ""),
         _ingredients_from_post(request.POST)
       )
       return render(request, "recipes/create.html", context)
@@ -78,8 +89,9 @@ class RecipesCreate(LoginRequiredMixin, View):
     ]
     if suggestions:
       context = _create_context(
-        request, 
+        request,
         request.POST.get("name", ""),
+        request.POST.get("directions", ""),
         _ingredients_from_post(request.POST),
         suggestions
       )
@@ -93,11 +105,11 @@ class RecipesView(View):
   def get(self, request, id):
     recipe = get_object_or_404(Recipe, id=id)
     ingredients = recipe.ingredients.all()
-    comments = recipe.comments.all()
+    comments = recipe.comments.order_by("created_at")
     context = {
-      "recipe": {"id": recipe.id, "name": recipe.name},
+      "recipe": {"id": recipe.id, "name": recipe.name, "directions": recipe.directions},
       "ingredients": list(ingredients.values("quantity", "ingredient__name")),
-      "comments": list(comments.values("content")),
+      "comments": list(comments.values("content", "created_at")),
       "csrf_token": get_token(request)
     }
     return render(request, 'recipes/view.html', context)

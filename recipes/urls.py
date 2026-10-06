@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RecipesViewAll, RecipesCreate, RecipesView, CommentsCreate
+from .views import RecipesViewAll, RecipesCreate, RecipesView, CommentsCreate, RecipesToday, MenuManage, MenuRecipeToggle
 
 app_name = "recipes"
 
