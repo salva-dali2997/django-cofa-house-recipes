@@ -37,9 +37,21 @@ def _ingredient_create_confirmation(ingredient_name, confirm_create):
 
 class RecipesViewAll(View):
   def get(self, request):
-    last_ten_recipes = Recipe.objects.order_by('-created_at')[:10]
-    recipes_data = list(last_ten_recipes.values('id', 'name'))
-    context = {"recipes_data": recipes_data}
+    all_recipes = Recipe.objects.order_by('-created_at')
+    paginator = Paginator(all_recipes, RECIPES_PER_PAGE)
+    page = paginator.get_page(request.GET.get('page'))
+    recipes_data = list(page.object_list.values('id', 'name'))
+    context = {
+      "recipes_data": recipes_data,
+      "pagination": {
+        "current_page": page.number,
+        "total_pages": paginator.num_pages,
+        "has_previous": page.has_previous(),
+        "has_next": page.has_next(),
+        "previous_page": page.previous_page_number() if page.has_previous() else None,
+        "next_page": page.next_page_number() if page.has_next() else None,
+      },
+    }
     return render(request, "recipes/view_all.html", context)
 
 class RecipesCreate(LoginRequiredMixin, View):
