@@ -1,4 +1,5 @@
-import RisoFood, { foodForId } from './RisoFood.jsx';
+import RisoFood from './RisoFood.jsx';
+import { foodForId } from './risoFoods.js';
 
 function RecipeCard({recipe_id, recipe_name}) {
   return (

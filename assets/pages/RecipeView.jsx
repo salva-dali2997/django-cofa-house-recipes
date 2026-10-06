@@ -1,7 +1,8 @@
 import { useState } from "react";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import RisoFood, { foodForId } from "../components/RisoFood";
+import RisoFood from "../components/RisoFood";
+import { foodForId } from "../components/risoFoods";
 
 const RELATIVE_TIME_UNITS = [
   ["year", 60 * 60 * 24 * 365],
