@@ -6,6 +6,7 @@ app_name = "recipes"
 urlpatterns = [
     path("", RecipesViewAll.as_view(), name="view_all"),
     path("create", RecipesCreate.as_view(), name="create"),
+    path("today", RecipesToday.as_view(), name="today"),
     path("<int:id>", RecipesView.as_view(), name="view"),
     path("comment", CommentsCreate.as_view(), name="comment"),
 ]

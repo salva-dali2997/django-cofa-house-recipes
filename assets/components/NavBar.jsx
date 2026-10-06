@@ -4,6 +4,7 @@ import Logo from './Logo.jsx'
 function NavBar({ context }){
   const navList = [
     {text: "All Recipes", href: "/recipes/", visibility: "always"},
+    {text: "Today's Recipes", href: "/recipes/today", visibility: "always"},
     {text: "Login", href: "/accounts/login", visibility: "anonymous"},
     {text: "Create Recipe", href: "/recipes/create", visibility: "authenticated"},
     {text: "Logout", href: "/accounts/logout-confirm", visibility: "authenticated"},
