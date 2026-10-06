@@ -25,6 +25,7 @@ node_modules/
 /static/css/
 /static/js/
 /static/manifest.json
+/static/assets/
 
 # collectstatic output (regenerated at deploy/build time)
 /staticfiles/
