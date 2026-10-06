@@ -97,4 +97,43 @@ class CommentsCreate(View):
     if not content:
       return JsonResponse({"error": "Comment cannot be empty"}, status=400)
     comment = Comment.objects.create(recipe=recipe, content=content)
-    return JsonResponse({"content": comment.content})
+    return JsonResponse({"content": comment.content, "created_at": comment.created_at.isoformat()})
+
+class RecipesToday(View):
+  """Public page: shows only the recipes currently on the menu. No login required."""
+  def get(self, request):
+    menu = _get_menu()
+    recipes_data = list(menu.recipe_set.order_by('name').values('id', 'name'))
+    context = {"recipes_data": recipes_data}
+    return render(request, "recipes/today.html", context)
+
+class MenuManage(LoginRequiredMixin, View):
+  """Admin-only page for choosing which recipes are on today's menu."""
+  def get(self, request):
+    if not request.user.is_superuser:
+      return redirect("recipes:today")
+    menu = _get_menu()
+    on_menu_ids = set(menu.recipe_set.values_list('id', flat=True))
+    recipes_data = [
+      {"id": recipe.id, "name": recipe.name, "on_menu": recipe.id in on_menu_ids}
+      for recipe in Recipe.objects.order_by('name')
+    ]
+    context = {
+      "recipes_data": recipes_data,
+      "csrf_token": get_token(request),
+    }
+    return render(request, "recipes/today_manage.html", context)
+
+class MenuRecipeToggle(View):
+  def post(self, request):
+    if not request.user.is_superuser:
+      return JsonResponse({"error": "Forbidden"}, status=403)
+    menu = _get_menu()
+    recipe = get_object_or_404(Recipe, id=request.POST.get("recipe_id"))
+    if menu.recipe_set.filter(id=recipe.id).exists():
+      menu.recipe_set.remove(recipe)
+      on_menu = False
+    else:
+      menu.recipe_set.add(recipe)
+      on_menu = True
+    return JsonResponse({"id": recipe.id, "on_menu": on_menu})
