@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+<defs>
+<filter id="a" x="-10%" y="-10%" width="120%" height="120%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="8" result="warp"/>
+  <feDisplacementMap in="SourceGraphic" in2="warp" scale="3" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="19" result="grain"/>
+  <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  4 0 0 0 -0.95" result="speckle"/>
+  <feComposite in="rough" in2="speckle" operator="in"/>
+</filter><filter id="b" x="-10%" y="-10%" width="120%" height="120%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="13" result="warp"/>
+  <feDisplacementMap in="SourceGraphic" in2="warp" scale="3" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="24" result="grain"/>
+  <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  4 0 0 0 -0.95" result="speckle"/>
+  <feComposite in="rough" in2="speckle" operator="in"/>
+</filter><pattern id="ht" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(30)">
+  <circle cx="2.5" cy="2.5" r="1.5" fill="#FD879B"/>
+</pattern><mask id="sd"><rect width="200" height="200" fill="#fff"/><ellipse cx="131.9" cy="111.6" rx="2.5" ry="5" transform="rotate(110 131.9 111.6)" fill="#000"/><ellipse cx="94.1" cy="133.5" rx="2.5" ry="5" transform="rotate(190 94.1 133.5)" fill="#000"/><ellipse cx="66.0" cy="100.0" rx="2.5" ry="5" transform="rotate(270 66.0 100.0)" fill="#000"/><ellipse cx="94.1" cy="66.5" rx="2.5" ry="5" transform="rotate(350 94.1 66.5)" fill="#000"/><ellipse cx="131.9" cy="88.4" rx="2.5" ry="5" transform="rotate(430 131.9 88.4)" fill="#000"/></mask>
+</defs>
+<g style="isolation:isolate">
+<g filter="url(#a)" style="mix-blend-mode:multiply">
+  <circle cx="100" cy="100" r="78" fill="url(#ht)"/>
+  <path mask="url(#sd)" fill="#E30B5D" d="M113.2 104.8 L167.9 104.1 A68 68 0 0 1 154.6 140.5 Z M107.0 112.1 L149.4 146.8 A68 68 0 0 1 115.8 166.1 Z M97.6 113.8 L107.8 167.6 A68 68 0 0 1 69.6 160.8 Z M89.3 109.0 L62.5 156.7 A68 68 0 0 1 37.6 127.0 Z M86.0 100.0 L34.8 119.4 A68 68 0 0 1 34.8 80.6 Z M89.3 91.0 L37.6 73.0 A68 68 0 0 1 62.5 43.3 Z M97.6 86.2 L69.6 39.2 A68 68 0 0 1 107.8 32.4 Z M107.0 87.9 L115.8 33.9 A68 68 0 0 1 149.4 53.2 Z M113.2 95.2 L154.6 59.5 A68 68 0 0 1 167.9 95.9 Z"/>
+</g>
+<g filter="url(#b)" transform="translate(-3,2)" style="mix-blend-mode:multiply">
+  <circle cx="100" cy="100" r="84" fill="none" stroke="#00754A" stroke-width="9"/>
+  <circle cx="100" cy="100" r="74" fill="none" stroke="#00754A" stroke-width="1.5" stroke-dasharray="3 5"/>
+</g>
+</g>
+</svg>

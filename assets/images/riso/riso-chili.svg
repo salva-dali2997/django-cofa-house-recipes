@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+<defs>
+<filter id="a" x="-10%" y="-10%" width="120%" height="120%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="31" result="warp"/>
+  <feDisplacementMap in="SourceGraphic" in2="warp" scale="3" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="42" result="grain"/>
+  <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  4 0 0 0 -0.95" result="speckle"/>
+  <feComposite in="rough" in2="speckle" operator="in"/>
+</filter><filter id="b" x="-10%" y="-10%" width="120%" height="120%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="34" result="warp"/>
+  <feDisplacementMap in="SourceGraphic" in2="warp" scale="3" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="45" result="grain"/>
+  <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  4 0 0 0 -0.95" result="speckle"/>
+  <feComposite in="rough" in2="speckle" operator="in"/>
+</filter><pattern id="ht" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+  <circle cx="2.5" cy="2.5" r="1.4" fill="#AD0949"/>
+</pattern>
+</defs>
+<g style="isolation:isolate">
+<g filter="url(#a)" style="mix-blend-mode:multiply">
+  <path fill="#E30B5D" d="M58 52 C 40 80, 52 120, 86 146 C 118 170, 158 176, 182 168 C 150 160, 118 140, 98 112 C 82 90, 80 66, 88 50 Z"/>
+  <path fill="url(#ht)" d="M64 70 C 60 100, 80 130, 110 150 C 140 168, 168 170, 182 168 C 150 160, 118 140, 98 112 C 82 90, 76 80, 64 70 Z"/>
+</g>
+<g filter="url(#b)" transform="translate(-2,2)" style="mix-blend-mode:multiply">
+  <path fill="#00754A" d="M52 54 C 60 40, 84 38, 94 50 C 84 58, 64 60, 52 54 Z"/>
+  <path d="M72 44 C 68 30, 74 20, 88 14" stroke="#00754A" stroke-width="6" stroke-linecap="round" fill="none"/>
+</g>
+</g>
+</svg>

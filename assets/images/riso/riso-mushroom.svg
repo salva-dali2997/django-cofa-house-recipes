@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+<defs>
+<filter id="a" x="-10%" y="-10%" width="120%" height="120%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="21" result="warp"/>
+  <feDisplacementMap in="SourceGraphic" in2="warp" scale="3" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="32" result="grain"/>
+  <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  4 0 0 0 -0.95" result="speckle"/>
+  <feComposite in="rough" in2="speckle" operator="in"/>
+</filter><filter id="b" x="-10%" y="-10%" width="120%" height="120%">
+  <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="24" result="warp"/>
+  <feDisplacementMap in="SourceGraphic" in2="warp" scale="3" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+  <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="35" result="grain"/>
+  <feColorMatrix in="grain" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  4 0 0 0 -0.95" result="speckle"/>
+  <feComposite in="rough" in2="speckle" operator="in"/>
+</filter><pattern id="ht" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+  <circle cx="3.0" cy="3.0" r="1.6" fill="#00754A"/>
+</pattern><mask id="sp"><rect width="200" height="200" fill="#fff"/>
+  <circle cx="70" cy="74" r="9" fill="#000"/><circle cx="104" cy="56" r="7" fill="#000"/>
+  <circle cx="136" cy="78" r="10" fill="#000"/><circle cx="100" cy="90" r="5" fill="#000"/>
+  <circle cx="48" cy="98" r="5" fill="#000"/><circle cx="156" cy="100" r="5" fill="#000"/></mask>
+</defs>
+<g style="isolation:isolate">
+<g filter="url(#b)" transform="translate(2,3)" style="mix-blend-mode:multiply">
+  <path fill="url(#ht)" d="M82 110 C 80 140, 74 166, 70 178 L 130 178 C 126 166, 120 140, 118 110 Z"/>
+  <path fill="none" stroke="#00754A" stroke-width="4" stroke-linejoin="round" d="M82 110 C 80 140, 74 166, 70 178 L 130 178 C 126 166, 120 140, 118 110"/>
+  <path fill="none" stroke="#00754A" stroke-width="3" d="M50 186 L150 186"/>
+</g>
+<g filter="url(#a)" style="mix-blend-mode:multiply">
+  <path mask="url(#sp)" fill="#E30B5D" d="M24 116 C 24 66, 60 36, 100 36 C 140 36, 176 66, 176 116 C 150 106, 50 106, 24 116 Z"/>
+</g>
+</g>
+</svg>

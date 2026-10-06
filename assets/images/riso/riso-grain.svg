@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="300" height="300">
+<defs>
+<filter id="p" x="0" y="0" width="300" height="300" filterUnits="userSpaceOnUse">
+  <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" seed="3" stitchTiles="stitch" result="g"/>
+  <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1 0 0 0 0" result="a"/>
+  <feComponentTransfer in="a" result="m"><feFuncA type="linear" slope="25" intercept="-15.5"/></feComponentTransfer>
+  <feFlood flood-color="#E30B5D"/>
+  <feComposite in2="m" operator="in"/>
+</filter><filter id="g" x="0" y="0" width="300" height="300" filterUnits="userSpaceOnUse">
+  <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="3" seed="9" stitchTiles="stitch" result="g"/>
+  <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1 0 0 0 0" result="a"/>
+  <feComponentTransfer in="a" result="m"><feFuncA type="linear" slope="25" intercept="-16"/></feComponentTransfer>
+  <feFlood flood-color="#00754A"/>
+  <feComposite in2="m" operator="in"/>
+</filter>
+</defs>
+<g style="isolation:isolate">
+<rect width="300" height="300" filter="url(#p)" opacity=".55"/>
+<rect width="300" height="300" filter="url(#g)" opacity=".45" style="mix-blend-mode:multiply"/>
+</g>
+</svg>
