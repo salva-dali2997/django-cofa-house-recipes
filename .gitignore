@@ -17,6 +17,8 @@ db.sqlite3
 
 # Legacy Rails data dump used one-time by import_legacy_data (contains real email/password hash)
 local-copy.db
+local-copy.db-shm
+local-copy.db-wal
 
 # Node
 node_modules/
