@@ -11,7 +11,7 @@ class Recipe(models.Model):
   menu = models.ManyToManyField(Menu, null=True)
 
 class Ingredient(models.Model):
-  name = models.CharField(max_length=20, unique=True)
+  name = models.CharField(max_length=50, unique=True)
 
   def save(self, *args, **kwargs):
     self.name = Ingredient.normalize(self.name)
