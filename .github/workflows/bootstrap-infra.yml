@@ -44,7 +44,7 @@ jobs:
       - name: Set recipes app secrets
         run: |
           flyctl secrets set \
-            DATABASE_URL="postgres://cofa:${{ secrets.POSTGRES_PASSWORD }}@cofa-house-db.internal:5432/cofa_house_recipes" \
+            DATABASE_URL="postgres://cofa:${{ secrets.POSTGRES_PASSWORD }}@cofa-house-db.flycast:5432/cofa_house_recipes" \
             DJANGO_SUPERUSER_EMAIL="${{ secrets.DJANGO_SUPERUSER_EMAIL }}" \
             DJANGO_SUPERUSER_PASSWORD="${{ secrets.DJANGO_SUPERUSER_PASSWORD }}" \
             DJANGO_SUPERUSER_USERNAME="${{ secrets.DJANGO_SUPERUSER_USERNAME }}" \
